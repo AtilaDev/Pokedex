@@ -1,12 +1,13 @@
 import React from 'react';
-import { View, Text, Image } from 'react-native';
+import { Text, Image } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { styles } from '../theme/appTheme';
 import { usePokemonPaginated } from '../hooks/usePokemonPaginated';
 
 export default function HomeScreen() {
   const { top } = useSafeAreaInsets();
-  usePokemonPaginated();
+  const { simplePokemonList } = usePokemonPaginated();
+  console.log(simplePokemonList);
 
   return (
     <>
