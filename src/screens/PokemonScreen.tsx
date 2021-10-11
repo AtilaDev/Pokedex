@@ -1,10 +1,19 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  ActivityIndicator,
+} from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParams } from '../navigation/Navigator';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { FadeInImage } from '../components/FadeInImage';
+import { usePokemon } from '../hooks/usePokemon';
+import PokemonDetails from '../components/PokemonDetails';
 
 interface Props extends StackScreenProps<RootStackParams, 'PokemonScreen'> {}
 
@@ -13,8 +22,10 @@ export default function PokemonScreen({ navigation, route }: Props) {
   const { id, name, picture } = simplePokemon;
   const { top } = useSafeAreaInsets();
 
+  const { isLoading, pokemon } = usePokemon(id);
+
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       {/* Header Conainer */}
       <View
         style={{
@@ -30,7 +41,7 @@ export default function PokemonScreen({ navigation, route }: Props) {
 
         {/* Pokemon name */}
         <Text style={{ ...styles.pokemonName, top: top + 45 }}>
-          {name + '\n'}#{id}
+          {<Text style={{ fontWeight: 'bold' }}>{name + '\n'}</Text>}#{id}
         </Text>
 
         {/* White Pokebola */}
@@ -41,6 +52,15 @@ export default function PokemonScreen({ navigation, route }: Props) {
 
         <FadeInImage uri={picture} style={styles.pokemonImage} />
       </View>
+
+      {/* Loading and Details */}
+      {isLoading ? (
+        <View style={styles.loadingIndicator}>
+          <ActivityIndicator color={color} size={50} />
+        </View>
+      ) : (
+        <PokemonDetails pokemon={pokemon} />
+      )}
     </View>
   );
 }
@@ -74,5 +94,10 @@ const styles = StyleSheet.create({
     height: 250,
     position: 'absolute',
     bottom: -15,
+  },
+  loadingIndicator: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
