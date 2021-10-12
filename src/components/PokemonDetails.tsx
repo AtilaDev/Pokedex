@@ -131,7 +131,7 @@ export default function PokemonDetails({ pokemon }: Props) {
 
         <View
           style={{
-            marginBottom: 20,
+            marginBottom: 90,
             alignItems: 'center',
           }}>
           <FadeInImage
